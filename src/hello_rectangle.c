@@ -1,66 +1,46 @@
-#include <stdio.h> 
-#include <stdlib.h> 
-#include <stdbool.h> 
+#include "../include/window.h" 
+#include "../include/shaders.h" 
 
-#include <glad/glad.h> 
-#include <GLFW/glfw3.h>
+int main(int argc, char** argv) {
+    GLFWwindow* Window = window(800, 600, "Hello Rectangle!", 3, 3, GLFW_OPENGL_CORE_PROFILE, GLFW_FALSE);
+    glClearColor(0.33f, 0.25f, 0.75f, 1.0f);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-#include "../include/shaders.h"
+    float vertices[4 * 3] = {
+        -0.5f, +0.5f, +0.0f, // 0 tl
+        +0.5f, +0.5f, +0.0f, // 1 tr
+        -0.5f, -0.5f, +0.0f, // 2 br
+        +0.5f, -0.5f, +0.0f, // 3 bl
+    };
 
-void cb_error(int code, char string[]) {
-    printf("Code: %d ", code); 
-    puts(string);
-}
+    unsigned int indices[2 * 3] = {
+        0, 1, 2, // Left Rectangle 
+        1, 3, 2, // Right Rectangle
+    };
 
-float vertices[3*3] = {
-    +0.0, +0.5, +0.0, 
-    -0.5, -0.5, +0.0, 
-    +0.5, -0.5, +0.0 
-};
+    unsigned int vbo, vao, ebo; 
+    glGenBuffers(1, &vbo);
+    glGenBuffers(1, &ebo);
+    glGenVertexArrays(1, &vao);
 
-unsigned int vbo, vao; 
-
-int main(int argc, char* argv[]) {
-    if (!glfwInit()) {
-        puts("Failed to init glfw!"); 
-        return EXIT_FAILURE;
-    }
-
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Hello Rectangle!", NULL, NULL); 
-    if (!window) {
-        puts("Failed to create window!"); 
-        return EXIT_FAILURE;
-    }
-    glfwMakeContextCurrent(window);
-
-    if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        puts("Failed to load opengl function pointers!"); 
-    }
-
-    glViewport(0, 0, 800, 600);
-    glGenBuffers(1, &vbo); 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo); 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glGenVertexArrays(1, &vao); 
     glBindVertexArray(vao);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float)*3, (void*)0); 
+    glBindBuffer(GL_ARRAY_BUFFER, vbo); 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*) 0);
     glEnableVertexAttribArray(0);
-
+    
     unsigned int shaders[2] = {
-        BASIC_VERTEX_SHADER, 
-        BASIC_FRAGMENT_SHADER, 
-    };  unsigned int program = shaderprogram(sizeof(shaders), shaders);
-    glUseProgram(program);
-    deleteshaders(sizeof(shaders), shaders) ;
+        shader(&vertex, GL_VERTEX_SHADER),
+        shader(&fragment, GL_FRAGMENT_SHADER), 
+    };  glUseProgram(program(2, shaders));
 
-    while(!glfwWindowShouldClose(window)) {
-        glfwSwapBuffers(window); 
+    while(!glfwWindowShouldClose(Window)) {
+        glClear(GL_COLOR_BUFFER_BIT);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);    
+        glfwSwapBuffers(Window);
         glfwPollEvents();
-        glDrawArrays(GL_TRIANGLES, 0, 3);
     }
-    return EXIT_SUCCESS;
 }
