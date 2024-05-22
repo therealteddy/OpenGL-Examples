@@ -36,5 +36,6 @@ GLFWwindow* window(unsigned int width, unsigned int height, char *title, unsigne
         return EXIT_FAILURE;
     }
 
+    atexit(glfwTerminate);
     return window;
 }

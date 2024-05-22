@@ -43,4 +43,7 @@ int main(int argc, char** argv) {
         glfwSwapBuffers(Window);
         glfwPollEvents();
     }
+
+    rmshaders(2, shaders);
+    glfwTerminate();
 }

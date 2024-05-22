@@ -8,14 +8,14 @@
 
 /*
     Initialize glfw, set window hints, create a window, and make it the current context
-    @width      Window width 
-    @height     Window height 
-    @title      Window title 
-    @major      OpenGL's major version 
-    @minor      OpenGL's minor version 
-    @profile    OpenGL profile to use
-    @resizable  Window should resize?  
-    @returns    A window
+    @param width      Window width 
+    @param height     Window height 
+    @param title      Window title 
+    @param major      OpenGL's major version 
+    @param minor      OpenGL's minor version 
+    @param profile    OpenGL profile to use
+    @param resizable  Window should resize?  
+    @returns          A window
 */
 GLFWwindow* window(unsigned int width, unsigned int height, char *title, unsigned int major, unsigned int minor, unsigned int profile, unsigned int resizable);
 

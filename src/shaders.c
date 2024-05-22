@@ -8,12 +8,15 @@ unsigned int shader(char **source, int type) {
     glShaderSource(shader, 1, source, NULL);
     glCompileShader(shader); 
     glGetShaderiv(shader, GL_COMPILE_STATUS, &code);
+
     if (!code) {
         glGetShaderInfoLog(shader, ERRORBUFFER, NULL, errorbuffer);
+
         puts(errorbuffer);
         return 0;
     }   else return shader;
 }
+
 
 unsigned int program(unsigned int nshaders, unsigned int shaders[]) {
     unsigned int program = glCreateProgram();
@@ -23,6 +26,7 @@ unsigned int program(unsigned int nshaders, unsigned int shaders[]) {
         glGetProgramiv(program, GL_LINK_STATUS, &code);
     if (!code) {
         glGetProgramInfoLog(program, ERRORBUFFER, NULL, errorbuffer);
+
         puts(errorbuffer);
         return 0;
     }   else return program;
