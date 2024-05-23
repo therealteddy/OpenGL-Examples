@@ -20,7 +20,6 @@
 /* The most basic shaders you will need */
 extern char *fragment, *vertex;
 
-/*========================================= Functions for handling shaders ================================================*/
 /*
     Read a shader source code and return a string.
     @param path  The file path to the text file containing the glsl source code.
@@ -34,34 +33,39 @@ void shader(char *path, char *dest[]);
     @param fragmentshader   The character array containing the fragment shader source. 
     @return                 The program containing the linked shaders for use with `glUseProgram()`
 */
-unsigned int program(char *vertexshader, char *fragmentshader);
+unsigned int program(char **vertexshader, char **fragmentshader);
 
-/*======================================= Functions for setting values to a uniform =======================================*/
 /* 
     Set the value of a uniform
     @param  name Name of uniform 
     @param  value The value to set of type bool
     @param  prog  The shader program the uniform rests on
-    @return 1 on success and 0 on failure
 */
-unsigned int uniform_bool (unsigned int prog, char* name, bool  value);
+void uniform_bool (unsigned int prog, char* name, bool  value);
 
 /* 
     Set the value of a uniform
     @param  name Name of uniform 
     @param  value The value to set of type int
     @param  prog  The shader program the uniform rests on
-    @return 1 on success and 0 on failure
 */
-unsigned int uniform_int  (unsigned int prog, char* name, int   value);
+void uniform_int  (unsigned int prog, char* name, int   value);
 
 /* 
     Set the value of a uniform
     @param  name  Name of uniform 
     @param  value The value to set of type float
     @param  prog  The shader program the uniform rests on
-    @return 1 on success and 0 on failure
 */
-unsigned int uniform_float(unsigned int prog, char* name, float value); 
+void uniform_float(unsigned int prog, char* name, float value); 
+
+/* 
+    Set the value of a uniform
+    @param  name  Name of uniform 
+    @param  value_x The x value to set of type float
+    @param  value_y The y value to set of type float
+    @param  prog  The shader program the uniform rests on
+*/
+void uniform_2f(unsigned int prog, char* name, float value_x, float value_y);
 
 #endif

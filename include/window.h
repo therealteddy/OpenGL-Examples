@@ -15,7 +15,7 @@
     @param minor      OpenGL's minor version 
     @param profile    OpenGL profile to use
     @param resizable  Window should resize?  
-    @returns          A window
+    @returns          A window or NULL on failure
 */
 GLFWwindow* window(unsigned int width, unsigned int height, char *title, unsigned int major, unsigned int minor, unsigned int profile, unsigned int resizable);
 

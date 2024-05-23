@@ -21,7 +21,7 @@ GLFWwindow* window(unsigned int width, unsigned int height, char *title, unsigne
     {
         fprintf(stderr, "Failed to create window!\n"); 
         glfwTerminate();
-        return EXIT_FAILURE;  
+        return  NULL;  
     }
 
     /* Make our window the main context */
@@ -33,7 +33,7 @@ GLFWwindow* window(unsigned int width, unsigned int height, char *title, unsigne
 
     if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         fprintf(stderr, "Failed to load the OpenGL functions!\n"); 
-        return EXIT_FAILURE;
+        return NULL;
     }
 
     atexit(glfwTerminate);

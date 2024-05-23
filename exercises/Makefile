@@ -20,3 +20,16 @@ ex3.exe: ./ex3.c $(SRC)/glad.c $(SRC)/shaders.c $(SRC)/window.c
 	$(CC) $(CFLAGS) $^ -o $(BIN)/$@ $(LIBS)
 	./bin/./$@ 
 
+ex4.exe: ./ex4.c $(SRC)/glad.c $(SRC)/ext_shaders.c $(SRC)/window.c
+	$(CC) $(CFLAGS) $^ -o $(BIN)/$@ $(LIBS)
+	./bin/./$@ 
+
+ex5.exe: ./ex5.c $(SRC)/glad.c $(SRC)/ext_shaders.c $(SRC)/window.c
+	$(CC) $(CFLAGS) $^ -o $(BIN)/$@ $(LIBS)
+	./bin/./$@ 
+
+ex6.exe: ./ex6.c $(SRC)/glad.c $(SRC)/ext_shaders.c $(SRC)/window.c
+	$(CC) $(CFLAGS) $^ -o $(BIN)/$@ $(LIBS)
+	./bin/./$@ 
+
+

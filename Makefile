@@ -29,4 +29,4 @@ rainbow.exe: $(SRC)/rainbow.c $(SRC)/glad.c $(SRC)/shaders.c $(SRC)/window.c
 rainbow2.exe: $(SRC)/rainbow2.c $(SRC)/glad.c $(SRC)/shaders.c $(SRC)/window.c
 	$(CC) $(CFLAGS) $^ -o $(BIN)/$@ $(LIBS)
 
-# The following recipies no longer rely on shaders.h, but rather on ext_shaders.h
+# The following recipies no longer rely on shaders.h but rather on ext_shaders.h

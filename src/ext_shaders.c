@@ -13,18 +13,25 @@ void shader(char *path, char **dest) {
 
     fseek(file, 0L, SEEK_END);
     size = ftell(file);
-    fclose(file);
-    file = fopen(path, "r"); 
+    fseek(file, 0L, SEEK_SET);
     
-    *dest = malloc(size);
+    *dest = (char*) malloc(size+1);
+    if (!*dest) {
+        printf("Failed to allocate memory to destination buffer!\n"); 
+        fclose(file);
+        return;
+    }
     if (!fread(*dest, sizeof(char), size, file)) {
         printf("Failed to read %s!\n", path);
         free(*dest);
+        fclose(file);
         return;
-    }
+    } else (*dest)[size] = '\0'; // Null terminate the string
+
+    fclose(file);
 }
 
-unsigned int program(char *vertexshader, char *fragmentshader) {
+unsigned int program(char **vertexshader, char **fragmentshader) {
     unsigned int vs = glCreateShader(GL_VERTEX_SHADER); 
     glShaderSource(vs, 1, vertexshader, NULL);
     glCompileShader(vs);
@@ -36,7 +43,7 @@ unsigned int program(char *vertexshader, char *fragmentshader) {
         return 0;
     }
 
-    unsigned int fs = glCreateShader(GL_VERTEX_SHADER); 
+    unsigned int fs = glCreateShader(GL_FRAGMENT_SHADER); 
     glShaderSource(fs, 1, fragmentshader, NULL);
     glCompileShader(fs);
     glGetShaderiv(fs, GL_COMPILE_STATUS, &code);
@@ -59,19 +66,25 @@ unsigned int program(char *vertexshader, char *fragmentshader) {
         return 0;
     }
 
+    glDeleteShader(vs);
+    glDeleteShader(fs);
     return sp; // The program returns sp if nothing went wrong.
 }
 
-unsigned int uniform_bool(unsigned int prog, char* name, bool value) {
+void uniform_bool(unsigned int prog, char* name, bool value) {
     glUniform1i(glGetUniformLocation(prog, name), value);
 }
 
-unsigned int uniform_int(unsigned int prog, char* name, int value) {
+void uniform_int(unsigned int prog, char* name, int value) {
     glUniform1i(glGetUniformLocation(prog, name), value);
 }
 
-unsigned int uniform_float(unsigned int prog, char* name, float value) {
+void uniform_float(unsigned int prog, char* name, float value) {
     glUniform1f(glGetUniformLocation(prog, name), value);
+}
+
+void uniform_2f(unsigned int prog, char* name, float value_x, float value_y) {
+    glUniform2f(glGetUniformLocation(prog, name), value_x, value_y);
 }
 
 /* Default shaders - the most basic */
